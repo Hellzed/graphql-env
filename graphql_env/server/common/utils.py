@@ -5,7 +5,8 @@ from ...params import GraphQLParams
 from .exceptions import InvalidVariablesJSONError, MissingQueryError
 
 
-def params_from_http_request(query_params, data):
+def params_from_http_request(query_params, data=None):
+    data = data or {}
     variables = data.get('variables') or query_params.get('variables')
     if isinstance(variables, six.string_types):
         try:

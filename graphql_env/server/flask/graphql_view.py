@@ -7,8 +7,8 @@ from graphql.execution import ExecutionResult
 from flask import jsonify, request
 
 from .graphiql import render_graphiql
-from .exceptions import GraphQLHTTPError, InvalidJSONError, HTTPMethodNotAllowed
-from .utils import params_from_http_request
+from ..common.exceptions import GraphQLHTTPError, InvalidJSONError, HTTPMethodNotAllowed
+from ..common.utils import params_from_http_request
 
 
 def can_display_graphiql(request):
