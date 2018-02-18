@@ -5,6 +5,17 @@ from ...params import GraphQLParams
 from .exceptions import InvalidVariablesJSONError, MissingQueryError
 
 
+def execution_result_to_dict(execution_result, format_error):
+    data = {}
+    if execution_result.errors:
+        data['errors'] = [
+            format_error(error) for error in execution_result.errors
+        ]
+    if execution_result.data and not execution_result.invalid:
+        data['data'] = execution_result.data
+    return data
+
+
 def params_from_http_request(query_params, data=None):
     data = data or {}
     variables = data.get('variables') or query_params.get('variables')

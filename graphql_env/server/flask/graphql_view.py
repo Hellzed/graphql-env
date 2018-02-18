@@ -8,7 +8,7 @@ from flask import jsonify, request
 
 from .graphiql import render_graphiql
 from ..common.exceptions import GraphQLHTTPError, InvalidJSONError, HTTPMethodNotAllowed
-from ..common.utils import params_from_http_request
+from ..common.utils import execution_result_to_dict, params_from_http_request
 
 
 def can_display_graphiql(request):
@@ -53,17 +53,6 @@ def get_allowed_operations(request):
 
 
 Request = object()
-
-
-def execution_result_to_dict(execution_result, format_error):
-    data = {}
-    if execution_result.errors:
-        data['errors'] = [
-            format_error(error) for error in execution_result.errors
-        ]
-    if execution_result.data and not execution_result.invalid:
-        data['data'] = execution_result.data
-    return data
 
 
 def default_serialize(execution_result, format_error=default_format_error):
