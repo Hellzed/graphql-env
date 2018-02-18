@@ -8,7 +8,7 @@ from flask import jsonify, request
 
 from .graphiql import render_graphiql
 from ..common.exceptions import GraphQLHTTPError, InvalidJSONError, HTTPMethodNotAllowed
-from ..common.utils import execution_result_to_dict, params_from_http_request
+from ..common.utils import execution_result_to_dict, graphql_params_from_data
 
 
 def can_display_graphiql(request):
@@ -40,7 +40,7 @@ def get_graphql_params(request):
         data = request.form.to_dict()
 
     query_params = request.args.to_dict()
-    return params_from_http_request(query_params, data)
+    return graphql_params_from_data(query_params, data)
 
 
 ALL_OPERATIONS = set(("query", "mutation", "subscription"))
