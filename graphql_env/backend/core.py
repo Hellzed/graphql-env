@@ -1,14 +1,19 @@
 from graphql import execute, parse, validate, GraphQLError
 from graphql.execution import ExecutionResult
+from graphql.execution.executors.asyncio import AsyncioExecutor
 from graphql.language import ast
 
 from .base import GraphQLBackend, GraphQLDocument
 
 
 class GraphQLCoreBackend(GraphQLBackend):
-    def __init__(self, executor=None, **kwargs):
+    def __init__(self, executor=None, enable_async=True, **kwargs):
         super(GraphQLCoreBackend, self).__init__(**kwargs)
-        self.execute_params = {'executor': executor}
+        return_promise = enable_async and isinstance(executor, AsyncioExecutor)
+        self.execute_params = {
+            'executor': executor,
+            'return_promise': return_promise
+        }
 
     def document_from_string(self, schema, request_string):
         return GraphQLCoreDocument(schema, request_string, self.execute_params)
